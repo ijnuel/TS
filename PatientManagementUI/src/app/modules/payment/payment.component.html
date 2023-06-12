@@ -1,0 +1,75 @@
+<h3>{{patientData.firstName}} {{patientData.lastName}}</h3>
+<form class="form w-100 mb-2" [formGroup]="form" id="kt_sign_in_form" (ngSubmit)="refresh()">
+    <div class="d-flex">
+
+        <div class="col-5">
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <label><b>From</b></label>
+                <input formControlName="startDate" class="form-control" [ngClass]="{
+'is-invalid': form.controls['startDate'].invalid,
+'is-valid': form.controls['startDate'].valid
+}" type="date" />
+                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+validation: 'required',
+message: 'From is required',
+control: form.controls['startDate']
+}"></ng-container>
+                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+    validation: 'max',
+    message: 'From cannot be greater than To',
+    control: form.controls['startDate']
+    }"></ng-container>
+                <br><br>
+            </div>
+        </div>
+
+        <div class="col-5">
+            <div class="col-lg-9 col-md-9 col-sm-9">
+                <label><b>To</b></label>
+                <input formControlName="endDate" class="form-control" [ngClass]="{
+'is-invalid': form.controls['endDate'].invalid,
+'is-valid': form.controls['endDate'].valid
+}" type="date" />
+                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+validation: 'required',
+message: 'To is required',
+control: form.controls['endDate']
+}"></ng-container>
+                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+    validation: 'min',
+    message: 'To cannot be lower than From',
+    control: form.controls['endDate']
+    }"></ng-container>
+                <br><br>
+            </div>
+        </div>
+
+        <div class="col-2 d-flex justify-content-end">
+            <button class="btn btn-success my-auto" [disabled]="form.invalid">Refresh</button>
+        </div>
+
+    </div>
+
+</form>
+
+<h4>Total: {{totalAmount}}</h4>
+
+<div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-success" (click)="createPayment()">Add Payment</button>
+</div>
+
+<table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-bordered table-striped table-hover">
+</table>
+
+
+<ng-template #formError let-control="control" let-message="message" let-validation="validation">
+    <ng-container *ngIf="control.hasError(validation) && (control.dirty || control.touched)">
+        <div class="fv-plugins-message-container">
+            <div class="fv-help-block">
+                <span role="alert">
+            {{ message }}
+          </span>
+            </div>
+        </div>
+    </ng-container>
+</ng-template>

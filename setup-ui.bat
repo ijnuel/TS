@@ -1,0 +1,2 @@
+cd ./PatientManagementUI
+npm install
